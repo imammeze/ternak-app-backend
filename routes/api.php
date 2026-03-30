@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProduksiSusuController;
 use App\Http\Controllers\Api\TernakController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\PerawatanTernakController;
+use App\Http\Controllers\Api\PerawatanTernakController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);

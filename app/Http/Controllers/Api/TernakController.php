@@ -37,14 +37,16 @@ class TernakController extends Controller
 
     public function show($id)
     {
-        $ternak = Ternak::find($id);
+        $ternak = Ternak::with(['perawatan' => function ($query) {
+            $query->orderBy('tanggal_tindakan', 'desc');
+        }])->find($id);
 
         if (!$ternak) {
             return response()->json([
                 'message' => 'Data ternak tidak ditemukan'
             ], 404);
         }
-        
+
         if ($ternak->foto) {
             $ternak->foto_url = asset('storage/' . $ternak->foto);
         }
