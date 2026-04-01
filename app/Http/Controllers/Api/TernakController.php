@@ -37,9 +37,14 @@ class TernakController extends Controller
 
     public function show($id)
     {
-        $ternak = Ternak::with(['perawatan' => function ($query) {
-            $query->orderBy('tanggal_tindakan', 'desc');
-        }])->find($id);
+        $ternak = Ternak::with([
+            'perawatan' => function ($query) {
+                $query->orderBy('tanggal_tindakan', 'desc');
+            },
+            'perpindahan' => function ($query) {
+                $query->orderBy('tanggal_tindakan', 'desc'); 
+            }
+        ])->find($id);
 
         if (!$ternak) {
             return response()->json([
