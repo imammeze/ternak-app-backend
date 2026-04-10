@@ -36,4 +36,44 @@ class KandangController extends Controller
             'data'    => $kandang
         ], 201);
     }
+
+    public function update(Request $request, $id)
+    {
+        $kandang = Kandang::find($id);
+
+        if (!$kandang) {
+            return response()->json(['message' => 'Data kandang tidak ditemukan'], 404);
+        }
+
+        $validated = $request->validate([
+            'kode_kandang' => 'required|string|unique:kandangs,kode_kandang,' . $id,
+            'nama_kandang' => 'required|string',
+            'kapasitas'    => 'required|integer|min:1',
+            'jenis'        => 'required|string',
+            'status'       => 'required|string',
+            'catatan'      => 'nullable|string',
+        ]);
+
+        $kandang->update($validated);
+
+        return response()->json([
+            'message' => 'Data kandang berhasil diperbarui',
+            'data'    => $kandang
+        ], 200);
+    }
+
+    public function destroy($id)
+    {
+        $kandang = Kandang::find($id);
+
+        if (!$kandang) {
+            return response()->json(['message' => 'Data kandang tidak ditemukan'], 404);
+        }
+
+        $kandang->delete();
+
+        return response()->json([
+            'message' => 'Data kandang berhasil dihapus'
+        ], 200);
+    }
 }
