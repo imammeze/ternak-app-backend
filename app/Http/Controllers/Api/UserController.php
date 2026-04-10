@@ -41,4 +41,17 @@ class UserController extends Controller
             'user'    => $user
         ], 201);
     }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        
+        $request->validate([
+            'role' => 'required|string|exists:roles,name'
+        ]);
+
+        $user->syncRoles([$request->role]);
+
+        return response()->json(['message' => 'Role berhasil diupdate']);
+    }
 }
