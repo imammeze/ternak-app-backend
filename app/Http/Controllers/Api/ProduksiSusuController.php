@@ -14,12 +14,12 @@ class ProduksiSusuController extends Controller
 
         if ($user->hasRole('stakeholder')) {
             $produksi = ProduksiSusu::where('user_id', $user->id)
-                                    ->orderBy('tanggal', 'desc')
-                                    ->get();
+                ->orderBy('tanggal', 'desc')
+                ->get();
         } else {
             $produksi = ProduksiSusu::with('pemilik')
-                                    ->orderBy('tanggal', 'desc')
-                                    ->get();
+                ->orderBy('tanggal', 'desc')
+                ->get();
         }
 
         return response()->json([
@@ -34,6 +34,7 @@ class ProduksiSusuController extends Controller
             'tanggal'       => 'required|date',
             'kepemilikan'   => 'required|string',
             'user_id'       => 'nullable|string|exists:users,id',
+            'jumlah_ternak' => 'required|numeric|min:0',
             'pagi_1l'       => 'required|numeric|min:0',
             'pagi_250ml'    => 'required|numeric|min:0',
             'pagi_cempe_ml' => 'required|numeric|min:0',
