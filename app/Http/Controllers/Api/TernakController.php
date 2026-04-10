@@ -5,16 +5,23 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTernakRequest;
 use App\Models\Ternak;
+use Illuminate\Http\Request;
 
 class TernakController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ternak = Ternak::orderBy('created_at', 'desc')->get();
+        $user = $request->user();
+
+        if ($user->hasRole('stakeholder')) {
+            $ternaks = Ternak::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+        } else {
+            $ternaks = Ternak::orderBy('created_at', 'desc')->get();
+        }
 
         return response()->json([
-            'message' => 'Berhasil mengambil data ternak',
-            'data' => $ternak
+            'message' => 'Berhasil mengambil data',
+            'data'    => $ternaks
         ], 200);
     }
 
