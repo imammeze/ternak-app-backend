@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AktivitasController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KandangController;
 use App\Http\Controllers\Api\PengeluaranSusuController;
+use App\Http\Controllers\Api\PengumumanController;
 use App\Http\Controllers\Api\PerawatanTernakController;
 use App\Http\Controllers\Api\PerpindahanTernakController;
 use App\Http\Controllers\Api\ProduksiSusuController;
@@ -24,6 +25,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/produksi-susu', [ProduksiSusuController::class, 'index']);
     Route::get('/pengeluaran-susu', [PengeluaranSusuController::class, 'index']);
     Route::get('/activity', [ActivityController::class, 'index']);
+    Route::apiResource('pengumuman', PengumumanController::class)->except(['show']);
     
     Route::prefix('ternak')->controller(TernakController::class)->group(function () {
         Route::get('/', 'index');
