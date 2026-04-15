@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,10 +19,15 @@ class AbsensiController extends Controller
             'catatan'     => 'nullable|string'
         ]);
 
+        $waktuSekarang = Carbon::now('Asia/Jakarta');
+        $batasWaktu = Carbon::today('Asia/Jakarta')->setTime(7, 5, 0);
+        $statusKehadiran = $waktuSekarang->greaterThan($batasWaktu) ? 'Terlambat' : 'Tepat Waktu';
+
         $absen = Absensi::create([
             'user_id'     => Auth::id(),
             'tipe'        => 'Masuk',
             'waktu_absen' => $request->waktu_absen,
+            'status_kehadiran' => $statusKehadiran,
             'latitude'    => $request->latitude,
             'longitude'   => $request->longitude,
             'catatan'     => $request->catatan,
@@ -68,7 +74,7 @@ class AbsensiController extends Controller
 
         $absen = Absensi::create([
             'user_id'     => Auth::id(),
-            'tipe'        => 'Mulai Lembur',
+            'tipe'        => 'Mulai Menginap',
             'waktu_absen' => $request->waktu_absen,
             'latitude'    => $request->latitude,
             'longitude'   => $request->longitude,
@@ -76,7 +82,7 @@ class AbsensiController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Mulai lembur berhasil dicatat.',
+            'message' => 'Mulai menginap berhasil dicatat.',
             'data'    => $absen
         ], 201);
     }
@@ -92,7 +98,7 @@ class AbsensiController extends Controller
 
         $absen = Absensi::create([
             'user_id'     => Auth::id(),
-            'tipe'        => 'Selesai Lembur',
+            'tipe'        => 'Selesai Menginap',
             'waktu_absen' => $request->waktu_absen,
             'latitude'    => $request->latitude,
             'longitude'   => $request->longitude,
@@ -100,7 +106,7 @@ class AbsensiController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Selesai lembur berhasil dicatat.',
+            'message' => 'Selesai menginap berhasil dicatat.',
             'data'    => $absen
         ], 201);
     }
