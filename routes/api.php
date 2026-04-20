@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ActivityController;
 use App\Http\Controllers\Api\AktivitasController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KandangController;
+use App\Http\Controllers\Api\PengajuanLiburController;
 use App\Http\Controllers\Api\PengeluaranSusuController;
 use App\Http\Controllers\Api\PengumumanController;
 use App\Http\Controllers\Api\PerawatanTernakController;
@@ -51,6 +52,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', 'store');
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
+    });
+
+    Route::prefix('pengajuan-libur')->controller(PengajuanLiburController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::post('/', 'store');
+        Route::put('/{id}/status', 'updateStatus');
     });
     
     Route::get('/list-stakeholders', function () {
